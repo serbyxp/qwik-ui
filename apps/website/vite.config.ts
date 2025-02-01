@@ -31,6 +31,17 @@ export default defineConfig(async () => {
   return {
     plugins: [
       autoAPI(),
+      qwikVite({
+        debug: true,
+        lint: false,
+        tsconfigFileNames: ['tsconfig.app.json'],
+        client: {
+          outDir: '../../dist/apps/website/client',
+        },
+        ssr: {
+          outDir: '../../dist/apps/website/server',
+        },
+      }),
       qwikCity({
         mdxPlugins: {
           rehypeSyntaxHighlight: false,
@@ -39,7 +50,7 @@ export default defineConfig(async () => {
         },
         mdx: {
           providerImportSource: '~/_state/MDXProvider',
-          recmaPlugins: [recmaProvideComponents],
+          recmaPlugins: [recmaProvideComponents as any],
           rehypePlugins: [
             () => (tree) => {
               visit(tree, (node) => {
@@ -75,16 +86,6 @@ export default defineConfig(async () => {
           ],
         },
       }),
-      qwikVite({
-        lint: false,
-        tsconfigFileNames: ['tsconfig.app.json'],
-        client: {
-          outDir: '../../dist/apps/website/client',
-        },
-        ssr: {
-          outDir: '../../dist/apps/website/server',
-        },
-      }),
       tsconfigPaths({ root: '../../' }),
     ],
 
@@ -96,9 +97,6 @@ export default defineConfig(async () => {
     },
     build: {
       target: 'es2022',
-      rollupOptions: {
-        // output,
-      },
     },
     preview: {
       headers: {
